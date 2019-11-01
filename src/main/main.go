@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"point"
+	"sync"
 	"time"
 )
 
@@ -61,6 +62,8 @@ var (
 	age  int
 	//sex := "男" 全局声明中次方式会报错
 	qq, email, address = 2940003, "ten@qq.com", "腾讯大厦"
+	user               = map[string]int{
+		"alpha": 28, "delta": 32}
 )
 
 //数组
@@ -287,6 +290,23 @@ func getSubTime() {
 
 	}
 	end := time.Now()
-	duration :=end.Sub(start)
-	println("duration:",duration)
+	duration := end.Sub(start)
+	println("duration:", duration)
+	p := Person{"Jack", 32, "138983483"}
+	fmt.Println("p:", p)
+}
+
+//锁（互斥）
+type Student struct {
+	mu   sync.Mutex
+	name string
+	age  int
+}
+
+//锁 lock.RLock 允许同一时间多个线程对变量进行读操作，但是只能一个线程进行写操作
+//lock.Lock 和 Mutex 作用相同
+type Teacher struct {
+	lock sync.RWMutex
+	name string
+	age  int
 }
